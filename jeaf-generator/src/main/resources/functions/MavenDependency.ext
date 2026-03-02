@@ -1,0 +1,10 @@
+extension java::GeneratorCommons;
+extension functions::SystemProperties;
+extension functions::NamedElement;
+extension functions::Javadoc;
+
+cached boolean isMavenDependency(uml::Element element) :
+	element.isStereotypeApplied("MavenDependency");
+
+cached JMM::MavenDependency asMavenDependency(uml::Element element):
+	(JMM::MavenDependency) element;
