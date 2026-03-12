@@ -15,7 +15,9 @@
 | `com.anaptecs.jeaf.junit.deprecation` | `DeprecatedService` |  | This service does not make sense any more.<br><br>The functionality is completely wrong. | 1.0 | 2023-12-31 |   
 
 <br>
-	
+
+# All Deprecations
+
 ## Package `com.anaptecs.jeaf.junit`
 
 <br>

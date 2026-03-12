@@ -10,6 +10,8 @@
 
 <br>
 
+# All Planned Breaking changes
+
 ## Package `com.anaptecs.jeaf.junit.deprecation`
 
 | Element  | Details    | Description  | Active with |

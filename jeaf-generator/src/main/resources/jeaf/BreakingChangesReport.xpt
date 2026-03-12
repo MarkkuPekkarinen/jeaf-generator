@@ -76,6 +76,8 @@
 	«EXPAND BreakingChangesTable FOR this.getAllDueBreakingChanges()»
 <br>
 
+# All Planned Breaking changes
+
 «ENDIF-»«ENDDEFINE»
 
 
