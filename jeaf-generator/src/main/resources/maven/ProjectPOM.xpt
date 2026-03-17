@@ -100,6 +100,13 @@
 				<modelArtifactXMIPath>${my.modelArtifactXMIPath}</modelArtifactXMIPath>
 			</properties>
 		</profile>
+«IF this.isCustomizable() -»
+
+		<!-- Section for custom profile entries -->
+		«PROTECT CSTART "<!-- " CEND " -->" ID "profiles:"  + this.getProjectID()»
+		<!-- Everything that is within this protection area will remain unchanged by JEAF Generator. -->
+		«ENDPROTECT»
+«ENDIF-»
 	</profiles>
 
 
@@ -139,14 +146,6 @@
 
 «EXPAND maven::POMHelper::GenerateDependenciesSection(moduleType, null, null, null) -»
 «IF this.isCustomizable() -»
-
-
-	<profiles>
-		<!-- Section for custom profile entries -->
-		«PROTECT CSTART "<!-- " CEND " -->" ID "profiles:"  + this.getProjectID()»
-		<!-- Everything that is within this protection area will remain unchanged by JEAF Generator. -->
-		«ENDPROTECT»
-	</profiles>
 
 
 	<build>
