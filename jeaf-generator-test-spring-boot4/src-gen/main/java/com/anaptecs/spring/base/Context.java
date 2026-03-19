@@ -6,7 +6,6 @@
 package com.anaptecs.spring.base;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -206,7 +205,8 @@ public class Context {
         this.setQueryParam(pObject.queryParam);
         this.setLang(pObject.lang);
         this.setIntCode(pObject.intCode);
-        customHeaders = new HashMap<String, String>(pObject.customHeaders);
+        customHeaders = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        customHeaders.putAll(pObject.customHeaders);
       }
     }
 
