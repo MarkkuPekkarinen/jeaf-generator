@@ -13,11 +13,11 @@
 
 ### Literals
 
-| Name | Description |
-|------|-------------|
-| `Zug` |  |
-| `Bus` |  |
-| `Schiff` |  |
-| `Tram` |  |
-| `Seilbahn` |  |
+| Name |  Legacy Name | Description |
+|------|----------------------|----------------------------|
+| `Zug` |   |  |
+| `Bus` |   |  |
+| `Schiff` |   |  |
+| `Tram` |   |  |
+| `Seilbahn` |   |  |
 

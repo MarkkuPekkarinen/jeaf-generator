@@ -13,20 +13,20 @@
 
 ### Literals
 
-| Name | Description |
-|------|-------------|
-| `A` |  |
-| :exclamation:`B` | :exclamation:**Deprecation Notice (since: , removed with: ):**<br> |
-| `C` |  |
+| Name |  Legacy Name | Description |
+|------|----------------------|----------------------------|
+| `A` |   |  |
+| :exclamation:`B` |   | :exclamation:**Deprecation Notice (since: , removed with: ):**<br> |
+| `C` |   |  |
 
 ## MyEnumWithInterface
 
 
 ### Literals
 
-| Name | Description |
-|------|-------------|
-| `ONE` |  |
-| `TWO` |  |
-| `MANY` |  |
+| Name |  Legacy Name | Description |
+|------|----------------------|----------------------------|
+| `ONE` |   |  |
+| `TWO` |   |  |
+| `MANY` |   |  |
 

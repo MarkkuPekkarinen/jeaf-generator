@@ -14,10 +14,10 @@
 
 **Properties / Associations**
 
-| Name | Type | Multiplicity | Constraints | Description |
-|------|------|:------------:|-------------|-------------|
-| `products` | [`Product`](#product) | `0..*` |  |  |
-| `name` | `String` | `1..1` |  |  |
+| Name | Type | Multiplicity |  Legacy Name | Constraints | Description |
+|------|------|:------------:|----------------------|-------------|-------------|
+| `products` | [`Product`](#product) | `0..*` |   |  |  |
+| `name` | `String` | `1..1` |   |  |  |
 
 <br>
 
@@ -29,10 +29,10 @@
 
 **Properties / Associations**
 
-| Name | Type | Multiplicity | Constraints | Description |
-|------|------|:------------:|-------------|-------------|
-| `amount` | `java.math.BigDecimal` | `1..1` |  |  |
-| `currency` | `java.util.Currency` | `1..1` |  |  |
+| Name | Type | Multiplicity |  Legacy Name | Constraints | Description |
+|------|------|:------------:|----------------------|-------------|-------------|
+| `amount` | `java.math.BigDecimal` | `1..1` |   |  |  |
+| `currency` | `java.util.Currency` | `1..1` |   |  |  |
 
 <br>
 
@@ -44,14 +44,14 @@
 
 **Properties / Associations**
 
-| Name | Type | Multiplicity | Constraints | Description |
-|------|------|:------------:|-------------|-------------|
-| `assortments` | [`Assortment`](#assortment) | `0..*` |  |  |
-| `pricesPerCurrency` | [`Price`](#price) | `1..*` |  |  |
-| `name` | `String` | `1..1` |  |  |
-| `description` | `String` | `1..1` |  |  |
-| `vat` | [`VAT`](#vat) | `1..1` |  |  |
-| `productCategory` | [`ProductCategory`](com.anaptecs.jeaf.junit.product#productcategory) | `0..1` |  |  |
+| Name | Type | Multiplicity |  Legacy Name | Constraints | Description |
+|------|------|:------------:|----------------------|-------------|-------------|
+| `assortments` | [`Assortment`](#assortment) | `0..*` |   |  |  |
+| `pricesPerCurrency` | [`Price`](#price) | `1..*` |   |  |  |
+| `name` | `String` | `1..1` |   |  |  |
+| `description` | `String` | `1..1` |   |  |  |
+| `vat` | [`VAT`](#vat) | `1..1` |   |  |  |
+| `productCategory` | [`ProductCategory`](com.anaptecs.jeaf.junit.product#productcategory) | `0..1` |   |  |  |
 
 <br>
 
@@ -63,9 +63,9 @@
 
 **Properties / Associations**
 
-| Name | Type | Multiplicity | Constraints | Description |
-|------|------|:------------:|-------------|-------------|
-| `rate` | `double` | `1..1` |  |  |
+| Name | Type | Multiplicity |  Legacy Name | Constraints | Description |
+|------|------|:------------:|----------------------|-------------|-------------|
+| `rate` | `double` | `1..1` |   |  |  |
 
 <br>
 

@@ -20,8 +20,8 @@
 
 **Properties / Associations**
 
-| Name | Type | Multiplicity | Constraints | Description |
-|------|------|:------------:|-------------|-------------|
+| Name | Type | Multiplicity |  Legacy Name | Constraints | Description |
+|------|------|:------------:|----------------------|-------------|-------------|
 
 <br>
 
@@ -39,11 +39,11 @@
 
 **Properties / Associations**
 
-| Name | Type | Multiplicity | Constraints | Description |
-|------|------|:------------:|-------------|-------------|
-| `heyBrother` | [`SoftLinkChildA`](#softlinkchilda) | `0..1` |  |  |
-| `softLinkPartners` | [`SoftLinkPartner`](#softlinkpartner) | `0..*` |  |  |
-| `oneLink` | [`SoftLinkPartner`](#softlinkpartner) | `1..1` |  |  |
+| Name | Type | Multiplicity |  Legacy Name | Constraints | Description |
+|------|------|:------------:|----------------------|-------------|-------------|
+| `heyBrother` | [`SoftLinkChildA`](#softlinkchilda) | `0..1` |   |  |  |
+| `softLinkPartners` | [`SoftLinkPartner`](#softlinkpartner) | `0..*` |   |  |  |
+| `oneLink` | [`SoftLinkPartner`](#softlinkpartner) | `1..1` |   |  |  |
 
 <br>
 
@@ -55,11 +55,11 @@
 
 **Properties / Associations**
 
-| Name | Type | Multiplicity | Constraints | Description |
-|------|------|:------------:|-------------|-------------|
-| `partners` | [`SoftLinkPartner`](#softlinkpartner) | `1..*` |  |  |
-| `thePartner` | [`SoftLinkPartner`](#softlinkpartner) | `1..1` |  |  |
-| `readonlyPartner` | [`SoftLinkPartner`](#softlinkpartner) | `0..1` |  |  |
+| Name | Type | Multiplicity |  Legacy Name | Constraints | Description |
+|------|------|:------------:|----------------------|-------------|-------------|
+| `partners` | [`SoftLinkPartner`](#softlinkpartner) | `1..*` |   |  |  |
+| `thePartner` | [`SoftLinkPartner`](#softlinkpartner) | `1..1` |   |  |  |
+| `readonlyPartner` | [`SoftLinkPartner`](#softlinkpartner) | `0..1` |   |  |  |
 
 <br>
 
@@ -71,14 +71,14 @@
 
 **Properties / Associations**
 
-| Name | Type | Multiplicity | Constraints | Description |
-|------|------|:------------:|-------------|-------------|
-| `theBackLink` | [`SoftLinkParent`](#softlinkparent) | `0..1` |  |  |
-| `childLinks` | [`SoftLinkChildA`](#softlinkchilda) | `0..*` |  |  |
-| `longLinks` | [`SoftLinkChildA`](#softlinkchilda) | `1..*` |  |  |
-| `derivedSoftLink` | [`SoftLinkParent`](#softlinkparent) | `1..1` | `derived` |  |
-| `theDerivedSoftLinks` | [`SoftLinkParent`](#softlinkparent) | `0..*` | `derived` |  |
-| `javaOnlyDerivedSoftLink` | [`SoftLinkChildA`](#softlinkchilda) | `0..1` | `derived` |  |
+| Name | Type | Multiplicity |  Legacy Name | Constraints | Description |
+|------|------|:------------:|----------------------|-------------|-------------|
+| `theBackLink` | [`SoftLinkParent`](#softlinkparent) | `0..1` |   |  |  |
+| `childLinks` | [`SoftLinkChildA`](#softlinkchilda) | `0..*` |   |  |  |
+| `longLinks` | [`SoftLinkChildA`](#softlinkchilda) | `1..*` |   |  |  |
+| `derivedSoftLink` | [`SoftLinkParent`](#softlinkparent) | `1..1` |   | `derived` |  |
+| `theDerivedSoftLinks` | [`SoftLinkParent`](#softlinkparent) | `0..*` |   | `derived` |  |
+| `javaOnlyDerivedSoftLink` | [`SoftLinkChildA`](#softlinkchilda) | `0..1` |   | `derived` |  |
 
 <br>
 

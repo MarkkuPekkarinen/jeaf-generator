@@ -13,8 +13,8 @@
 
 ### Literals
 
-| Name | Description |
-|------|-------------|
-| `FOOD` |  |
-| `NON_FOOD` |  |
+| Name |  Legacy Name | Description |
+|------|----------------------|----------------------------|
+| `FOOD` |   |  |
+| `NON_FOOD` |   |  |
 

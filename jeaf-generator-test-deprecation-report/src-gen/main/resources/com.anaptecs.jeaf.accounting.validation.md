@@ -13,8 +13,8 @@
 
 ### Literals
 
-| Name | Description |
-|------|-------------|
-| `UP_AND_AWAY` |  |
-| `STAY_HERE` |  |
+| Name |  Legacy Name | Description |
+|------|----------------------|----------------------------|
+| `UP_AND_AWAY` |   |  |
+| `STAY_HERE` |   |  |
 

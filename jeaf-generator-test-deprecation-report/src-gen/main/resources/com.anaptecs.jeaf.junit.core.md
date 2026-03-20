@@ -13,22 +13,22 @@ There are so many colors.
 
 ### Literals
 
-| Name | Description |
-|------|-------------|
-| `WHITE` | Bright white |
-| `BLACK` |  |
-| `GREEN` |  |
-| :exclamation:`LightGreen` | :exclamation:**Deprecation Notice (since: , removed with: ):**<br>We do not like this color any more. |
-| `LIGHT_GREEN` |  |
+| Name |  Legacy Name | Description |
+|------|----------------------|----------------------------|
+| `WHITE` |   | Bright white |
+| `BLACK` |   |  |
+| `GREEN` |   |  |
+| :exclamation:`LightGreen` |   | :exclamation:**Deprecation Notice (since: , removed with: ):**<br>We do not like this color any more. |
+| `LIGHT_GREEN` |   |  |
 
 ## Farbe
 :exclamation:**Deprecation Notice (since: , removed with: ):**<br>
 
 ### Literals
 
-| Name | Description |
-|------|-------------|
-| `WEISS` |  |
-| `SCHWARZ` |  |
-| `BLAU` |  |
+| Name |  Legacy Name | Description |
+|------|----------------------|----------------------------|
+| `WEISS` |   |  |
+| `SCHWARZ` |   |  |
+| `BLAU` |   |  |
 
