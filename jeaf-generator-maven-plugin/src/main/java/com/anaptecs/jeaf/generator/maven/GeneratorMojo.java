@@ -1809,6 +1809,27 @@ public class GeneratorMojo extends AbstractMojo {
   @Parameter(required = false, defaultValue = " ")
   private String issueTrackingURLPattern;
 
+  /**
+   * Parameter defines the base URL of the Maven repository where artifacts are hosted.
+   */
+  @Parameter(required = false, defaultValue = " ")
+  private String mavenRepoBaseURL;
+
+  /**
+   * Switch can be used to generated release notes based on the information defined in the UML model.
+   */
+  @Parameter(required = false, defaultValue = "false")
+  private Boolean generateReleaseNotes;
+
+  /**
+   * Name of the directory where release notes will be written to. The parameter is defined relative to the projects
+   * base directory.
+   *
+   * By default, <code>releases</code> will be used.
+   */
+  @Parameter(required = false, defaultValue = "releases")
+  private String releaseNotesDirectory;
+
   @Component
   private BuildPluginManager pluginManager;
 
@@ -1909,7 +1930,7 @@ public class GeneratorMojo extends AbstractMojo {
     for (Artifact lDependency : lArtifacts) {
       String lProjectID = lDependency.getGroupId() + ":" + lDependency.getArtifactId();
       String lVersion = lDependency.getVersion();
-      this.getLog().debug(lProjectID + ":" + lVersion);
+      this.getLog().info(lProjectID + ":" + lVersion);
       ArtifactCache.addArtifactVersion(lProjectID, lVersion);
     }
   }
@@ -1936,6 +1957,13 @@ public class GeneratorMojo extends AbstractMojo {
       }
     }
     customCheckFiles = lCleanedCustomCheckFiles;
+
+    if (generateReleaseNotes && mavenProject.isExecutionRoot() && mavenProject.getPackaging().equals("pom")) {
+      generateReleaseNotes = true;
+    }
+    else {
+      generateReleaseNotes = false;
+    }
 
     // Resolve default parent POM if it is not set
     if (mavenProjectDefaultParentVersion.trim().isEmpty()) {
@@ -2541,6 +2569,16 @@ public class GeneratorMojo extends AbstractMojo {
       lLog.info("Issue Tracking URL pattern:                       " + issueTrackingURLPattern);
       lLog.info(" ");
     }
+
+    if (generateReleaseNotes) {
+      lLog.info(" ");
+      lLog.info("Generate Release Notes:                           " + generateReleaseNotes);
+      lLog.info("Release Notes Directory:                          " + releaseNotesDirectory);
+      if (mavenRepoBaseURL != null && !mavenRepoBaseURL.isEmpty()) {
+        lLog.info("Maven Repo Base URL:                              " + mavenRepoBaseURL);
+      }
+      lLog.info(" ");
+    }
   }
 
   private boolean generateJavaClasses( ) {
@@ -2874,6 +2912,10 @@ public class GeneratorMojo extends AbstractMojo {
           mavenProjectGeneratedFromModelTemplate.toString());
       System.setProperty(PROPERTY_PREFIX + "addRequiredTechnicalDepdendencies",
           addRequiredTechnicalDepdendencies.toString());
+
+      System.setProperty(PROPERTY_PREFIX + "mavenRepoBaseURL", mavenRepoBaseURL);
+      System.setProperty(PROPERTY_PREFIX + "generateReleaseNotes", generateReleaseNotes.toString());
+      System.setProperty(PROPERTY_PREFIX + "releaseNotesDirectory", releaseNotesDirectory);
 
       if (xmiDirectory != null) {
         System.setProperty(PROPERTY_PREFIX + "xmiDirectory",
@@ -3221,7 +3263,7 @@ public class GeneratorMojo extends AbstractMojo {
 
   private boolean isUMLGenerationRequested( ) {
     boolean lUMLGenerationRequested;
-    if (generateMavenProjectStructure || generateGeneratorProjectParentPOM) {
+    if (generateMavenProjectStructure || generateGeneratorProjectParentPOM || generateReleaseNotes) {
       lUMLGenerationRequested = mavenProject.isExecutionRoot();
     }
     else {
@@ -3240,7 +3282,7 @@ public class GeneratorMojo extends AbstractMojo {
         | generatePersistentObjects | generateComponentImpls | generateComponentRuntimeClasses | generateGlobalParts
         | generateExceptionClasses | generateJUnitTests | generateTypesReport | generateModelReport
         | generateBreakingChangesReport | generateRESTDeprecationReport | generateJavaDeprecationReport
-        | generateOpenAPISpec | generateJSONSerializers | enforceCustomTemplateExecution;
+        | generateOpenAPISpec | generateJSONSerializers | enforceCustomTemplateExecution | generateReleaseNotes;
   }
 
   private boolean isMessageConstantsGenerationRequested( ) {

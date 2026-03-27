@@ -1,0 +1,27 @@
+
+String getBreakingIcon(Integer scale):
+	"![Breaking](https://www.jeaf-generator.io/icons/breaking-24.png)";
+
+
+String getBackwardCompatibleIcon(Integer scale):
+	"![Backward Compatible](https://www.jeaf-generator.io/icons/backward-compatible-24.png)";
+
+
+String getStrictForwardCompatibleIcon(Integer scale):
+	"![Strict Forward Compatible](https://www.jeaf-generator.io/icons/strict-forward-compatible-24.png)";
+
+
+String getAPIForwardCompatibleIcon(Integer scale):
+	"![API Forward Compatible](https://www.jeaf-generator.io/icons/api-forward-compatible-24.png)";
+
+
+String getFeatureIcon(Integer scale):
+	"![Feature](https://www.jeaf-generator.io/icons/new-feature-24.png)";
+
+
+String getImprovementIcon(Integer scale):
+	"![Improvement](https://www.jeaf-generator.io/icons/improvement-24.png)";
+
+
+String getBugIcon(Integer scale):
+	"![Bug](https://www.jeaf-generator.io/icons/bug-24.png)";

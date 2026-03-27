@@ -1,0 +1,156 @@
+extension java::GeneratorCommons;
+extension functions::SystemProperties;
+extension functions::ReleaseUnit;
+extension functions::Icons;
+extension functions::Ordered;
+extension functions::MavenProject;
+
+extension org::openarchitectureware::util::stdlib::io;
+
+cached boolean isRelease(uml::Element element) :
+	element.isStereotypeApplied("Release");
+
+
+cached JMM::Release asRelease(uml::Element element):
+	(JMM::Release) element;
+
+
+boolean isReleased(JMM::Release release):
+	if release.released != null
+	then release.released
+	else false;
+
+
+cached JMM::ReleaseUnit getReleaseUnit(JMM::Release release):
+	release.owner.asReleaseUnit();
+
+
+cached String getMavenRepoArtifactLink(JMM::Release release):
+	release.getReleaseUnit().getMavenRepoPath() + "/" + release.name;
+
+
+cached String getCompatibilityIconsWithNames(JMM::Release release):
+	if release.getCompatibilityInfosFromChanges().select(e|e.toString() == "BREAKING").size > 0
+	then getBreakingIcon(4) + "   `Breaking`"
+	else release.getBackwardCompatibilityInfosFromChanges() + "<br>" + release.getForwardCompatibilityInfosFromChanges();
+
+
+cached String getBackwardCompatibilityInfosFromChanges(JMM::Release release):
+	if release.getCompatibilityInfosFromChanges().select(e|e.toString() == "BACKWARD_COMPATIBLE").size > 0
+	then getBackwardCompatibleIcon(4) + "   `Backward Compatible`";
+
+
+cached String getForwardCompatibilityInfosFromChanges(JMM::Release release):
+	if release.getCompatibilityInfosFromChanges().select(e|e.toString() == "API_FORWARD_COMPATIBLE").size > 0
+	then getAPIForwardCompatibleIcon(4) + "   `API Forward Compatible`"
+	else if release.getCompatibilityInfosFromChanges().select(e|e.toString() == "STRICT_FORWARD_COMPATIBLE").size > 0
+	then getStrictForwardCompatibleIcon(4) + "   `Strict Forward Compatible`";
+
+
+cached List[String] getCompatibilityInfosFromChanges(JMM::Release release):
+	release.getAllChangeDescriptions().compatibilityInfos.toSet();
+
+
+cached List[JMM::ChangeDescription] getAllChanges(JMM::Release release):
+	release.ownedElement.typeSelect(JMM::ChangeDescription);
+
+
+cached List[JMM::ReleaseNotesEntry] getGeneralEntries(JMM::Release release):
+	release.ownedElement.typeSelect(JMM::ReleaseNotesEntry).select(e|e.releaseNotesEntryType.name == "GENERAL_INFORMATION").sortBy(e|e.getOrder());
+
+
+cached boolean hasGeneralEntries(JMM::Release release):
+	!release.getGeneralEntries().isEmpty;
+
+
+cached List[JMM::ReleaseNotesEntry] getMigrationNoticeEntries(JMM::Release release):
+	release.ownedElement.typeSelect(JMM::ReleaseNotesEntry).select(e|e.releaseNotesEntryType.name == "MIGRATION_NOTICE").sortBy(e|e.getOrder());
+
+
+cached boolean hasMigrationNoticeEntries(JMM::Release release):
+	!release.getMigrationNoticeEntries().isEmpty;
+
+
+cached List[JMM::ChangeDescription] getAllChangeDescriptions(JMM::Release release):
+	release.getFeatureDescriptions().addAll(release.getImprovementDescriptions()).addAll(release.getBugDescriptions());
+
+
+cached List[JMM::ChangeDescription] getFeatureDescriptions(JMM::Release release):
+	release.getInternalFeatureDescriptions().addAll(release.getBundledFeatureDescriptions());
+
+
+private List[JMM::ChangeDescription] getInternalFeatureDescriptions(JMM::Release release):
+	release.ownedElement.typeSelect(JMM::ChangeDescription).select(e|e.issueCategory.name == "FEATURE").sortBy(e|e.getOrder());
+
+
+cached List[JMM::ChangeDescription] getBundledFeatureDescriptions(JMM::Release release):
+	release.getBundledReleaseDependencies().getFeatureDescriptionsForDependency(release.name);
+
+
+private List[JMM::ChangeDescription] getFeatureDescriptionsForDependency(JMM::ReleaseDependency dependency, String currentVersion):
+	info("Current version: " + currentVersion) ->
+	info("Unreleased versions: " + dependency.getReleaseUnit().getUnreleasedVersions()) ->
+	info("Matching version: " + dependency.getMatchingVersion(currentVersion)) ->
+	info(dependency.releaseNotesResolution.name) ->
+	dependency.getReleaseUnit().getReleases().select(e|e.name == dependency.getMatchingVersion(currentVersion)).getInternalFeatureDescriptions();
+
+
+private List[JMM::ReleaseDependency] getBundledReleaseDependencies(JMM::Release release):
+	release.getReleaseUnit().getTransitiveReleaseDependencies().select(e|e.getReleaseUnit().hasMavenCoordinates() && e.hasMatchingVersion(release.name));
+
+
+private String getMatchingVersion(JMM::ReleaseDependency dependency, String currentVersion):
+	if dependency.hasMatchingVersion(currentVersion)
+	then
+		switch (dependency.releaseNotesResolution.name) {
+			case "SAME_VERSION": dependency.getReleaseUnit().getVersions().selectFirst(e| e == currentVersion)
+			case "LATEST_VERSION": dependency.getReleaseUnit().getVersions().getLatestVersion()
+			case "LATEST_UNRELEASED_VERSION": dependency.getReleaseUnit().getUnreleasedVersions().getLatestVersion()
+			case "LATEST_UNRELEASED_VERSION_WITH_SAME_MAJOR": currentVersion.getLatestMatchingVersion(dependency.getReleaseUnit().getUnreleasedVersions())
+			default: true
+		};
+
+
+
+private boolean hasMatchingVersion(JMM::ReleaseDependency dependency, String currentVersion):
+	switch (dependency.releaseNotesResolution.name) {
+		case "SAME_VERSION": dependency.getReleaseUnit().getVersions().selectFirst(e| e == currentVersion) != null
+		case "LATEST_VERSION": dependency.getReleaseUnit().getVersions().getLatestVersion().length > 0
+		case "LATEST_UNRELEASED_VERSION": dependency.getReleaseUnit().getUnreleasedVersions().getLatestVersion().length > 0 != null
+		case "LATEST_UNRELEASED_VERSION_WITH_SAME_MAJOR": currentVersion.getLatestMatchingVersion(dependency.getReleaseUnit().getUnreleasedVersions()).length > 0
+		default: false
+	};
+
+
+cached List[JMM::ChangeDescription] getImprovementDescriptions(JMM::Release release):
+	release.getInternalFeatureDescriptions().addAll(release.getBundledImprovementDescriptions());
+
+
+private List[JMM::ChangeDescription] getInternalImprovementDescriptions(JMM::Release release):
+	release.ownedElement.typeSelect(JMM::ChangeDescription).select(e|e.issueCategory.name == "IMPROVEMENT").sortBy(e|e.getOrder());
+
+
+cached List[JMM::ChangeDescription] getBundledImprovementDescriptions(JMM::Release release):
+	release.getBundledReleaseDependencies().getImprovementDescriptionsForDependency(release.name);
+
+
+private List[JMM::ChangeDescription] getImprovementDescriptionsForDependency(JMM::ReleaseDependency dependency, String currentVersion):
+	dependency.getReleaseUnit().getReleases().select(e|e.name == dependency.getMatchingVersion(currentVersion)).getInternalImprovementDescriptions();
+
+
+cached List[JMM::ChangeDescription] getBugDescriptions(JMM::Release release):
+	release.getInternalImprovementDescriptions().addAll(release.getBundledBugDescriptions());
+
+
+private List[JMM::ChangeDescription] getInternalBugDescriptions(JMM::Release release):
+	release.ownedElement.typeSelect(JMM::ChangeDescription).select(e|e.issueCategory.name == "BUGFIX").sortBy(e|e.getOrder());
+
+
+cached List[JMM::ChangeDescription] getBundledBugDescriptions(JMM::Release release):
+	release.getBundledReleaseDependencies().getBugDescriptionsForDependency(release.name);
+
+
+private List[JMM::ChangeDescription] getBugDescriptionsForDependency(JMM::ReleaseDependency dependency, String currentVersion):
+	dependency.getReleaseUnit().getReleases().select(e|e.name == dependency.getMatchingVersion(currentVersion)).getInternalBugDescriptions();
+
+

@@ -1,0 +1,141 @@
+«IMPORT uml»
+«IMPORT JMM»
+
+«EXTENSION java::GeneratorCommons»
+«EXTENSION functions::ReleaseUnit»
+«EXTENSION functions::Release»
+«EXTENSION functions::ReleaseNotesEntry»
+«EXTENSION functions::ChangeDescription»
+«EXTENSION functions::MavenProject»
+«EXTENSION functions::Domain»
+«EXTENSION functions::Ordered»
+«EXTENSION functions::SystemProperties»
+
+«DEFINE GenerateReleaseNotes FOR ReleaseUnit»
+	«FOREACH this.getReleases() AS release»
+		«EXPAND GenerateReleaseFile(this) FOR release»
+	«ENDFOREACH»
+«ENDDEFINE»
+
+
+
+
+«DEFINE GenerateReleaseFile(ReleaseUnit releaseUnit) FOR Release»
+«FILE releaseNotesDirectory() + "/" + name + ".md" basedir -»
+# Release Notes «releaseUnit.getReleaseUnitName()» «name»
+
+| Release Info              |                                             |
+| ------------------------- | --------------------------------------------|
+| Version                   | `«name»`                                    |
+«IF releaseDate.length > 0 -»
+| Release Date              | «releaseDate»                               |
+«ENDIF-»
+«IF umlModelRevision > 0-»
+| UML Model Revision        | `«this.umlModelRevision»`                   |
+«ENDIF-»
+| Compatibility             | «this.getCompatibilityIconsWithNames()»     |
+«IF oldestSupportedVersion.length > 0-»
+| Oldest Supported Version  | `«this.oldestSupportedVersion»`             |
+«ENDIF-»
+«IF releaseUnit.hasMavenRepoPath()-»
+| Links                     | [Maven Repo Link](«this.getMavenRepoArtifactLink()»)           |
+«ENDIF-»
+
+<br>
+
+«IF this.hasGeneralEntries()-»
+## General
+
+«FOREACH this.getGeneralEntries() AS entry-»
+### «entry.getTitle()»
+«entry.getDetails()»
+
+<br>
+
+«ENDFOREACH-» 
+«ENDIF-»
+«IF this.hasMigrationNoticeEntries()-»
+## Migration Notice
+
+«FOREACH this.getMigrationNoticeEntries() AS entry-»
+### «entry.getTitle()»
+
+«entry.getDetails()»
+
+<br>
+
+«ENDFOREACH-»
+«ENDIF-»
+## Changes Summary
+
+«LET this.getAllChangeDescriptions().getDomain().toSet().sortBy(e|e.getDomainName()).sortBy(e|e.getOrder()) AS domains-»
+«LET domains.size > 1 AS multipleDomanis-»
+
+| Issue | Type | «IF multipleDomanis»Domain | «ENDIF»Summary | Compatibility |
+| ----- | :--: | «IF multipleDomanis»------ | «ENDIF»------- | :-----------: |
+«FOREACH this.getAllChangeDescriptions() AS description-»
+| «description.getIssueLinkForMarkdown()» | «description.getCategoryIcon()» | «IF multipleDomanis» «description.getDomain().getDomainName()» |«ENDIF»«description.getTitle()» | «description.getCompatibilityIcons()» |
+«ENDFOREACH-»
+
+<br>
+
+«IF releaseUnit.hasTransitiveReleaseDependencies()-»
+## Bundled Artifacts
+
+| Name | Artifact | Version |
+| ---- | -------- | ------- |
+«FOREACH releaseUnit.getTransitiveReleaseDependencies() AS dependency-»
+«LET dependency.getReleaseUnit().getVersions().toString(";") AS versions-»
+| «dependency.getReleaseUnit().getReleaseUnitName()» | «IF dependency.getReleaseUnit().hasMavenCoordinates()»`«dependency.getReleaseUnit().getGroupId()»:«dependency.getReleaseUnit().getArtifactId()»`«ENDIF» | `«dependency.getReleaseUnit().getArtifactVersion()»` |
+«ENDLET-»
+«ENDFOREACH-»
+
+<br>
+
+«ENDIF-»
+## Changes Details
+
+«IF multipleDomanis-»
+«FOREACH domains AS domain»
+### Domain "«domain.getDomainName()»"
+
+«FOREACH this.getAllChangeDescriptions().select(e|e.getDomain() == domain) AS description-»
+#### «description.getIssueLinkForMarkdown()» «description.getTitle()» «description.getCompatibilityIcons()»
+«description.getDetails()»
+
+<br>
+
+«ENDFOREACH-»
+«ENDFOREACH-»
+«ELSE-»
+«LET this.getAllChangeDescriptions().getRelease().getReleaseUnit().toSet().sortBy(e|e.getReleaseUnitName()).sortBy(e|e.getOrder()) AS releaseUnits-»
+«LET releaseUnits.size > 0 AS hasMultipleReleaseUnits-»
+«IF hasMultipleReleaseUnits»
+«FOREACH releaseUnits AS unit-»
+### «unit.getReleaseUnitName()»
+
+«FOREACH this.getAllChangeDescriptions() AS description-»
+#### «description.getIssueLinkForMarkdown()» «description.getTitle()» «description.getCompatibilityIcons()»
+«description.getDetails()»
+
+<br>
+
+«ENDFOREACH-»
+«ENDFOREACH-»
+«ELSE»
+«FOREACH this.getAllChangeDescriptions() AS description-»
+### «description.getIssueLinkForMarkdown()» «description.getTitle()» «description.getCompatibilityIcons()»
+«description.getDetails()»
+
+<br>
+
+«ENDFOREACH-»
+«ENDIF-»
+«ENDLET-»
+«ENDLET-»
+«ENDIF-»
+«ENDLET-»
+«ENDLET-»
+«ENDFILE»
+«ENDDEFINE»
+

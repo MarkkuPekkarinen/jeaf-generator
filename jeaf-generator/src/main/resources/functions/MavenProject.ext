@@ -157,6 +157,10 @@ private String javaGetArchetypeMavenSuffix(String archeType):
 	JAVA com.anaptecs.jeaf.fwk.generator.util.maven.ProjectArchetype.getMavenSuffix(java.lang.String);
 
 
+cached String getArtifactVersionForReleaseNotes(String groupId, String artifactId):
+	javaGetArtifactVersion(groupId + ":" + artifactId).replaceAll("-SNAPSHOT", "");
+
+
 private String javaGetArtifactVersion(String projectID):
 	JAVA com.anaptecs.jeaf.fwk.generator.util.maven.ArtifactCache.getArtifactVersion(java.lang.String);
 
