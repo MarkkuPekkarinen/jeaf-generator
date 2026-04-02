@@ -31,12 +31,15 @@ cached String getGroupId(JMM::Domain domain):
 
 
 cached JMM::Domain getDomain(uml::Element element):
-	if element.getNearestPackage().isDomain()
-	then element.getNearestPackage().asDomain()
+	if element == null || element.getNearestPackage() == null
+	then null
 	else
-		if element.hasParentPackage()
-		then element.owner.getDomain()
-		else null;
+		if element.getNearestPackage().isDomain()
+		then element.getNearestPackage().asDomain()
+		else
+			if element.hasParentPackage()
+			then element.owner.getDomain()
+			else null;
 
 
 cached boolean belongsToDomain(uml::Element element):

@@ -9,8 +9,8 @@ boolean isModuleTypeBOM(String moduleType):
 boolean isModuleTypeDomainBOM(String moduleType):
 	moduleType == "DOMAIN_BOM";
 
-boolean isModuleTypeUML(String moduleType):
-	moduleType == "UML_MODEL";
+boolean isModuleTypeXMI(String moduleType):
+	moduleType == "XMI";
 
 boolean isModuleTypeOpenAPI(String moduleType):
 	moduleType == "OPEN_API";

@@ -140,6 +140,17 @@
 			<artifactId>«dependency.split(":").get(1)»</artifactId>
 		</dependency>
 		«ENDFOREACH -»
+		«LET this.getDependentProjects().selectFirst(e|e.isArchetypeUMLModelProject()) AS umlProject-»
+			«IF umlProject != null-»
+		<dependency>
+			<groupId>«umlProject.getGroupId()»</groupId>
+			<artifactId>«umlProject.getModuleArtifactId("XMI")»</artifactId>
+			<version>${«umlProject.getVersionPropertyName()»}</version>
+			<type>zip</type>
+			<scope>provided</scope>
+		</dependency>
+			«ENDIF-»
+		«ENDLET-» 
 		«IF this.hasDomainProjects()-»
 			«FOREACH this.getDomainProjects() AS domainProject-»
 		<dependency>

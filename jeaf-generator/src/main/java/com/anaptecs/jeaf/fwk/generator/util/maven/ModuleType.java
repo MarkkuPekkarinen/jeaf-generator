@@ -10,7 +10,7 @@ public enum ModuleType {
 
 	DOMAIN_BOM("Domain BOM", "DomainBOM", "bom", "pom"),
 
-	UML_MODEL("UML Model", "UMLModel", "uml", "zip"),
+	XMI("XMI", "XMI", "xmi", "zip"),
 
 	OPEN_API("OpenAPI", "OpenAPI", "open-api", "zip"),
 

@@ -122,7 +122,7 @@
 
 	<dependencyManagement>
 		<dependencies>
-«FOREACH this.getDependentProjects() AS project -»
+«FOREACH this.getDependentProjects().select(e|e.isArchetypeUMLModelProject() == false) AS project -»
 			<dependency>
 				<groupId>«project.getGroupId()»</groupId>
 				<artifactId>«project.getBOMArtifactId()»</artifactId>

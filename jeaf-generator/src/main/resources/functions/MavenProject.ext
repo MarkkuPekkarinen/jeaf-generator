@@ -320,7 +320,7 @@ cached String getUMLCoordinatesSource(JMM::MavenProject project):
 
 cached List[JMM::MavenProject] getDependentProjects(JMM::MavenProject project):
 	project.getMavenProjectDependencies().supplier.typeSelect(JMM::MavenProject);
-
+	
 cached List[JMM::MavenProjectDependency] getMavenDependenciesForModule(JMM::MavenProject project, String moduleDependencyType):
 	project.getMavenProjectDependencies().select(e|e.moduleDependencyTypes.toString().contains(moduleDependencyType));
 	

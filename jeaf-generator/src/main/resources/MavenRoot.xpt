@@ -38,6 +38,7 @@
 			«ENDIF»
 	
 			«FOREACH this.getModuleTypes() AS moduleType»
+				«info("Processing «ModuleType» " + moduleType)»
 				«REM»BOM«ENDREM»
 				«IF moduleType.isModuleTypeBOM()»
 					«EXPAND maven::BOM::GenerateBOM»
@@ -49,8 +50,8 @@
 				«ENDIF»
 	
 				«REM»UML Model«ENDREM»
-				«IF moduleType.isModuleTypeUML()»
-					«EXPAND maven::UMLModule::GenerateUMLModule»
+				«IF moduleType.isModuleTypeXMI()»
+					«EXPAND maven::XMIModule::GenerateXMIModule»
 				«ENDIF»
 	
 				«REM»OpenAPI«ENDREM»
