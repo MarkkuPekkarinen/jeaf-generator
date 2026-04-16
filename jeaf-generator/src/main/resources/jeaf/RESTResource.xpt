@@ -63,7 +63,7 @@ public class «this.getResourceName(reactive)» {
 	            /**
 	             * REST Controller was generated with request / response validation enabled. The actual validation will be delegated to the implementation of this interface.
 	             */
-	            private final com.anaptecs.jeaf.validation.api.ValidationExecutor validationExecutor;
+	            private final «getValidationExecutorFQN(reactive)» validationExecutor;
             «ENDIF»
         «ENDIF»
         «IF isRESTLibraryJAXRS()»
@@ -73,7 +73,7 @@ public class «this.getResourceName(reactive)» {
 	             * to the implementation of this interface.
 	             */
 	            @org.springframework.beans.factory.annotation.Autowired
-	            private com.anaptecs.jeaf.validation.api.ValidationExecutor validationExecutor;
+	            private «getValidationExecutorFQN(reactive)» validationExecutor;
             «ENDIF»
         «ENDIF»
     «ENDIF»
@@ -118,7 +118,7 @@ public class «this.getResourceName(reactive)» {
 				 * @param pCustomHeaderFilter Filter for custom header fields.
 				 «ENDIF -»
 				 */
-				public «this.getResourceName(reactive)»( «this.asJEAFService().getServiceNameFQN(reactive)» p«name» «IF this.hasCompositeDataTypes()», «getObjectMapperFQN(jacksonVersion)» pObjectMapper«ENDIF»«IF generateRESTRequestValidation() || generateRESTResponseValidation()», com.anaptecs.jeaf.validation.api.ValidationExecutor pValidationExecutor«ENDIF»«IF this.requiresCustomHeadersFilter()», com.anaptecs.jeaf.rest.resource.api.CustomHeaderFilter pCustomHeaderFilter«ENDIF») {
+				public «this.getResourceName(reactive)»( «this.asJEAFService().getServiceNameFQN(reactive)» p«name» «IF this.hasCompositeDataTypes()», «getObjectMapperFQN(jacksonVersion)» pObjectMapper«ENDIF»«IF generateRESTRequestValidation() || generateRESTResponseValidation()», «getValidationExecutorFQN(reactive)» pValidationExecutor«ENDIF»«IF this.requiresCustomHeadersFilter()», com.anaptecs.jeaf.rest.resource.api.CustomHeaderFilter pCustomHeaderFilter«ENDIF») {
 				  «name.toFirstLower()» = p«name»;
 				  «IF this.hasCompositeDataTypes()»
 				  objectMapper = pObjectMapper;
@@ -701,21 +701,22 @@ public class «this.getResourceName(reactive)» {
 	  «ENDIF»
 	  
 	  «IF reactive»
+	      «LET generateRESTRequestValidation() && this.getInputParameters().select(e|e.isParameterSuppressed() == false).isEmpty == false AS requiresRequestValidation» 
 	      «IF this.hasRequestBody()»
-	            return «this.getRequestBodyParameters().first().name» 
-            «IF generateRESTRequestValidation() && this.getInputParameters().select(e|e.isParameterSuppressed() == false).isEmpty == false»
-		            .flatMap(«this.getRequestBodyParameters().first().name»Body -> {
+	            return «this.getRequestBodyParameters().first().name»
+            «IF requiresRequestValidation»
+		            .flatMap(«this.getRequestBodyParameters().first().name»Body -> 
 		                // Validate request parameter(s).
-		                validationExecutor.validateRequest(«restResource.fqn()»Reactive.class, «this.asRESTParameterListNames(reactive)»);
+		                validationExecutor.validateRequest(«restResource.fqn()»Reactive.class, «this.asRESTParameterListNames(reactive)»)
             «ENDIF»
                         // Delegate request to service.
-                        return «restResource.name.toFirstLower()».«this.name»(«this.asRESTParameterListNames(reactive)»);
-                    })
+                        «IF requiresRequestValidation».then(«ENDIF»«restResource.name.toFirstLower()».«this.name»(«this.asRESTParameterListNames(reactive)»)«IF requiresRequestValidation»)«ENDIF»
+                    )
             «IF getReturnTypeName() != "void"»
                 «IF generateRESTResponseValidation()»
-		            .doOnNext(lResponse ->
-		                // Validate response.
-		                validationExecutor.validateResponse(«restResource.fqn()»Reactive.class, lResponse)
+	                // Validate response.
+		            .delayUntil(response ->
+		                validationExecutor.validateResponse(«restResource.fqn()»Reactive.class, response)
 		            );
 		        «ELSE»
 		            ;
@@ -725,27 +726,28 @@ public class «this.getResourceName(reactive)» {
 	        «ENDIF» 
 	      «ELSE»
                 return «getMonoTypeName()»
-                    .defer(() -> {
-            «IF generateRESTRequestValidation() && this.getInputParameters().select(e|e.isParameterSuppressed() == false).isEmpty == false»
+                    .defer(() -> 
+            «IF requiresRequestValidation»
                         // Validate request parameter(s).
-                        validationExecutor.validateRequest(«restResource.fqn()»Reactive.class, «this.asRESTParameterListNames(reactive)»);
+                        validationExecutor.validateRequest(«restResource.fqn()»Reactive.class, «this.asRESTParameterListNames(reactive)»)
             «ENDIF»
                         // Delegate request to service.
-                        return «restResource.name.toFirstLower()».«this.name»(«this.asRESTParameterListNames(reactive)»);
-                    })           
+                        «IF requiresRequestValidation».then(«ENDIF»«restResource.name.toFirstLower()».«this.name»(«this.asRESTParameterListNames(reactive)»)«IF requiresRequestValidation»)«ENDIF»
+                    )           
             «IF getReturnTypeName() != "void"»
                 «IF generateRESTResponseValidation()»
-                    .doOnNext(lResponse ->
-                        // Validate response.
-                        validationExecutor.validateResponse(«restResource.fqn()»Reactive.class, lResponse)
+                    // Validate response.
+                    .delayUntil(response ->
+                        validationExecutor.validateResponse(«restResource.fqn()»Reactive.class, response)
                     );
                 «ELSE»
                     ;
-                «ENDIF»         
+                «ENDIF»
             «ELSE»
                 ;
-            «ENDIF» 
+            «ENDIF»
 	      «ENDIF»
+          «ENDLET» 
 	  «ELSE»
 		  «IF generateRESTRequestValidation() && this.getInputParameters().select(e|e.isParameterSuppressed() == false).isEmpty == false»
 	        // Validate request parameter(s).
