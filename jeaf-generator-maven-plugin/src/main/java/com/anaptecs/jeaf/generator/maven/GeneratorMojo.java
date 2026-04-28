@@ -3704,7 +3704,10 @@ public class GeneratorMojo extends AbstractMojo {
         String[] lExtensions = { "java" };
         Collection<File> lFiles = FileUtils.listFiles(new File(sourceGenDirectory), lExtensions, true);
         if (disableSrcDirFormatting == false) {
-          lFiles.addAll(FileUtils.listFiles(new File(sourceDirectory), lExtensions, true));
+          File lSourceDirectory = new File(sourceDirectory);
+          if (lSourceDirectory.exists()) {
+            lFiles.addAll(FileUtils.listFiles(lSourceDirectory, lExtensions, true));
+          }
         }
         ImportProcessor lProcessor = new ImportProcessor();
         lProcessor.setRemoveUnusedImports(removeUnusedImports);
