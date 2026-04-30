@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.anaptecs.jeaf.generator</groupId>
 		<artifactId>jeaf-generator-project</artifactId>
-		<version>1.28.3-SNAPSHOT</version>
+		<version>1.29.0</version>
 	</parent>
 
 	<name>JEAF Generator Test POM Generation</name>
@@ -61,7 +61,7 @@
 					<mavenArtifactIdPattern>$[PROJECT_NAME_MAVEN]</mavenArtifactIdPattern>
 					<mavenProjectUseDefaultParent>false</mavenProjectUseDefaultParent>
 					
-					<mavenScmPathPattern>https://github.com/anaptecs/$[PROJECT_NAME_MAVEN]></mavenScmPathPattern>
+					<mavenScmPathPattern>https://github.com/anaptecs/$[PROJECT_NAME_MAVEN]&gt;</mavenScmPathPattern>
 					<mavenArtifactDefaultVersion>47.1.1</mavenArtifactDefaultVersion>
 					<mavenProjectUMLPackage>com.anaptecs.maven</mavenProjectUMLPackage>
 
