@@ -286,7 +286,7 @@ public class «this.getResourceName(reactive)» {
 	    	«ELSE»
 	    		«LET basicParam.type.attribute().select(e|e.isStatic == false).first() AS dataTypeProperty»
 		    		«IF basicParam.isMultivalued() == false»
-		    			«IF basicParam.isRequired()»
+		    			«IF basicParam.isRequiredRESTParam()»
 	                        «basicParam.type.fqn()» «basicParam.name» = «basicParam.type.fqn()».builder().«dataTypeProperty.asSetter()»(«basicParam.name»AsBasicType).build(); 
 	                    «ELSE»
 			    			«basicParam.type.fqn()» «basicParam.name»;
@@ -376,7 +376,7 @@ public class «this.getResourceName(reactive)» {
 	@org.springframework.web.bind.annotation.ResponseStatus(org.springframework.http.HttpStatus.«getJAXRSStatusCodeName(this.getStatusCodeName())»)
 	@org.springframework.web.bind.annotation.RequestMapping(
 	«IF this.getRESTOperationPath(restResource).length > 0»path = "«this.getRESTOperationPath(restResource)»",«ENDIF»
-	«IF httpMethods.select(e|e.supportsRequestBody()).isEmpty == false && this.getConsumedMediaTypes(restResource).size > 0»consumes = {«FOREACH this.getConsumedMediaTypes(restResource) AS mediaType SEPARATOR ","»"«mediaType.toOpenAPIContentType()»"«ENDFOREACH»},«ENDIF»
+	«IF httpMethods.select(e|e.supportsRequestBody()).isEmpty == false && this.hasRequestBody() && this.getConsumedMediaTypes(restResource).size > 0»consumes = {«FOREACH this.getConsumedMediaTypes(restResource) AS mediaType SEPARATOR ","»"«mediaType.toOpenAPIContentType()»"«ENDFOREACH»},«ENDIF»
 	«IF this.getProducedMediaTypes(restResource).size > 0»produces = {«FOREACH this.getProducedMediaTypes(restResource) AS mediaType SEPARATOR ","»"«mediaType.toOpenAPIContentType()»"«ENDFOREACH»},«ENDIF»
 	method = { «FOREACH httpMethods AS httpMethod SEPARATOR ","»org.springframework.web.bind.annotation.RequestMethod.«httpMethod»«ENDFOREACH»}
 	)
@@ -419,7 +419,7 @@ public class «this.getResourceName(reactive)» {
 		  			«ELSE»
 		  				«LET attribute.type.attribute().select(e|e.isStatic == false).first() AS dataTypeProperty»
 			  				«IF attribute.isMultivalued() == false»
-			  					«IF attribute.isRequiredProperty() == false»
+			  					«IF attribute.isRequiredRESTProperty() == false»
 				  					if(«attribute.asParameter()»AsBasicType != null) {
 				  					  «beanParam.name.toLocalVar()»Builder.«attribute.asSetter()»(«attribute.type.fqn()».builder().«dataTypeProperty.asSetter()»(«attribute.asParameter()»AsBasicType).build());
 				  					}
@@ -590,7 +590,7 @@ public class «this.getResourceName(reactive)» {
 	    	«ELSE»
 	    		«LET basicParam.type.attribute().select(e|e.isStatic == false).first() AS dataTypeProperty»
 		    		«IF basicParam.isMultivalued() == false»
-	                    «IF basicParam.isRequired()»
+	                    «IF basicParam.isRequiredRESTParam()»
 	                        «basicParam.type.fqn()» «basicParam.name» = «basicParam.type.fqn()».builder().«dataTypeProperty.asSetter()»(«basicParam.name»AsBasicType).build();
 	                    «ELSE»
 		                    «basicParam.type.fqn()» «basicParam.name»;
@@ -892,7 +892,7 @@ public class «this.getResourceName(reactive)» {
 	  		String«IF this.isMultivalued()»[]«ENDIF» «this.name»AsBasicType
 	  	«ELSE»
 	  		«LET this.type.attribute().select(e|e.isStatic == false).first() AS dataTypeProperty»
-	  			«IF this.isRequired() == false && this.isMultivalued() == false && dataTypeProperty.type.isPrimitiveType()»
+	  			«IF this.isRequiredRESTParam() == false && this.isMultivalued() == false && dataTypeProperty.type.isPrimitiveType()»
 	  				«dataTypeProperty.getWrapperTypeAwareQualifiedName()» «this.name»AsBasicType
 	  			«ELSE»
 		  			«dataTypeProperty.fqn()»«IF this.isMultivalued()»[]«ENDIF» «this.name»AsBasicType
@@ -910,22 +910,22 @@ public class «this.getResourceName(reactive)» {
 
 «DEFINE SpringRESTParameterDefinition(boolean reactive) FOR Parameter»
   «IF this.isPathParam() -»
-  @org.springframework.web.bind.annotation.PathVariable(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequired()» «IF this.isParamJEAFEnumeration() && this.hasDefaultValueForEnum()», defaultValue = "«this.getDefaultValueForEnum()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicType()», defaultValue = "«this.getDefaultValueForBasicType()»"«ENDIF»)
+  @org.springframework.web.bind.annotation.PathVariable(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredRESTParam()» «IF this.isParamJEAFEnumeration() && this.hasDefaultValueForEnum()», defaultValue = "«this.getDefaultValueForEnum()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicType()», defaultValue = "«this.getDefaultValueForBasicType()»"«ENDIF»)
   «ENDIF-»
   «IF this.isHeaderParam() -»
-  @org.springframework.web.bind.annotation.RequestHeader(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequired()»«IF this.isParamJEAFEnumeration() && this.hasDefaultValueForEnum()», defaultValue = "«this.getDefaultValueForEnum()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicType()», defaultValue = "«this.getDefaultValueForBasicType()»"«ENDIF»)
+  @org.springframework.web.bind.annotation.RequestHeader(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredRESTParam()»«IF this.isParamJEAFEnumeration() && this.hasDefaultValueForEnum()», defaultValue = "«this.getDefaultValueForEnum()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicType()», defaultValue = "«this.getDefaultValueForBasicType()»"«ENDIF»)
   «ENDIF-»
   «IF this.isQueryParam() -»
-  @org.springframework.web.bind.annotation.RequestParam(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequired()»«IF this.isParamJEAFEnumeration() && this.hasDefaultValueForEnum()», defaultValue = "«this.getDefaultValueForEnum()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicType()», defaultValue = "«this.getDefaultValueForBasicType()»"«ENDIF»)
+  @org.springframework.web.bind.annotation.RequestParam(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredRESTParam()»«IF this.isParamJEAFEnumeration() && this.hasDefaultValueForEnum()», defaultValue = "«this.getDefaultValueForEnum()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicType()», defaultValue = "«this.getDefaultValueForBasicType()»"«ENDIF»)
   «ENDIF-»
   «IF this.isCookieParam() -»
-  @org.springframework.web.bind.annotation.CookieValue(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequired()»«IF this.isParamJEAFEnumeration() && this.hasDefaultValueForEnum()», defaultValue = "«this.getDefaultValueForEnum()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicType()», defaultValue = "«this.getDefaultValueForBasicType()»"«ENDIF»)
+  @org.springframework.web.bind.annotation.CookieValue(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredRESTParam()»«IF this.isParamJEAFEnumeration() && this.hasDefaultValueForEnum()», defaultValue = "«this.getDefaultValueForEnum()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicType()», defaultValue = "«this.getDefaultValueForBasicType()»"«ENDIF»)
   «ENDIF-»
   «IF this.isBeanParam() -»
   	«EXPAND ProcessBeanParam FOR ((Class)this.type)»
   «ENDIF-»
   «IF this.isRequestBody() -»
-  @org.springframework.web.bind.annotation.RequestBody(required = «this.isRequired()»)
+  @org.springframework.web.bind.annotation.RequestBody(required = «this.isRequiredRESTParam()»)
   «ENDIF-»
 
   «EXPAND java::Helper::GenerateAnnotations»
@@ -936,7 +936,7 @@ public class «this.getResourceName(reactive)» {
 	  		String«IF this.isMultivalued()»[]«ENDIF» «name»AsBasicType
 	  	«ELSE»
   			«LET this.type.attribute().select(e|e.isStatic == false).first() AS dataTypeProperty»
-  				«IF this.isRequired() == false && this.isMultivalued() == false && dataTypeProperty.type.isPrimitiveType()»
+  				«IF this.isRequiredRESTParam() == false && this.isMultivalued() == false && dataTypeProperty.type.isPrimitiveType()»
   					«dataTypeProperty.getWrapperTypeAwareQualifiedName()» «name»AsBasicType
   				«ELSE»
 	  				«dataTypeProperty.fqn()»«IF this.isMultivalued()»[]«ENDIF» «name»AsBasicType
@@ -974,16 +974,16 @@ public class «this.getResourceName(reactive)» {
 
 «DEFINE SpringRESTBeanParameterDefinition FOR Property»
   «IF this.isPathParamProperty() -»
-  @org.springframework.web.bind.annotation.PathVariable(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredProperty()» «IF this.isJEAFEnumerationProperty() && this.hasDefaultValueForEnumProperty()», defaultValue = "«this.getDefaultValueForEnumProperty()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicTypeProperty()», defaultValue = "«this.getDefaultValueForBasicTypeProperty()»"«ENDIF»)
+  @org.springframework.web.bind.annotation.PathVariable(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredRESTProperty()» «IF this.isJEAFEnumerationProperty() && this.hasDefaultValueForEnumProperty()», defaultValue = "«this.getDefaultValueForEnumProperty()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicTypeProperty()», defaultValue = "«this.getDefaultValueForBasicTypeProperty()»"«ENDIF»)
   «ENDIF-»
   «IF this.isHeaderParamProperty() -»
-  @org.springframework.web.bind.annotation.RequestHeader(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredProperty()»«IF this.isJEAFEnumerationProperty() && this.hasDefaultValueForEnumProperty()», defaultValue = "«this.getDefaultValueForEnumProperty()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicTypeProperty()», defaultValue = "«this.getDefaultValueForBasicTypeProperty()»"«ENDIF»)
+  @org.springframework.web.bind.annotation.RequestHeader(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredRESTProperty()»«IF this.isJEAFEnumerationProperty() && this.hasDefaultValueForEnumProperty()», defaultValue = "«this.getDefaultValueForEnumProperty()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicTypeProperty()», defaultValue = "«this.getDefaultValueForBasicTypeProperty()»"«ENDIF»)
   «ENDIF-»
   «IF this.isQueryParamProperty() -»
-  @org.springframework.web.bind.annotation.RequestParam(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredProperty()»«IF this.isJEAFEnumerationProperty() && this.hasDefaultValueForEnumProperty()», defaultValue = "«this.getDefaultValueForEnumProperty()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicTypeProperty()», defaultValue = "«this.getDefaultValueForBasicTypeProperty()»"«ENDIF»)
+  @org.springframework.web.bind.annotation.RequestParam(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredRESTProperty()»«IF this.isJEAFEnumerationProperty() && this.hasDefaultValueForEnumProperty()», defaultValue = "«this.getDefaultValueForEnumProperty()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicTypeProperty()», defaultValue = "«this.getDefaultValueForBasicTypeProperty()»"«ENDIF»)
   «ENDIF-»
   «IF this.isCookieParamProperty() -»
-  @org.springframework.web.bind.annotation.CookieValue(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredProperty()»«IF this.isJEAFEnumerationProperty() && this.hasDefaultValueForEnumProperty()», defaultValue = "«this.getDefaultValueForEnumProperty()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicTypeProperty()», defaultValue = "«this.getDefaultValueForBasicTypeProperty()»"«ENDIF»)
+  @org.springframework.web.bind.annotation.CookieValue(name = "«EXPAND java::OpenAPI::RESTParamName FOR this»", required = «this.isRequiredRESTProperty()»«IF this.isJEAFEnumerationProperty() && this.hasDefaultValueForEnumProperty()», defaultValue = "«this.getDefaultValueForEnumProperty()»"«ENDIF» «IF (this.type.isBasicType() || this.type.isPrimitiveType()) && this.hasDefaultValueForBasicTypeProperty()», defaultValue = "«this.getDefaultValueForBasicTypeProperty()»"«ENDIF»)
   «ENDIF-»
 
   «EXPAND java::Helper::GenerateAnnotations»
@@ -993,7 +993,7 @@ public class «this.getResourceName(reactive)» {
 	  		String«IF this.isMultivalued()»[]«ENDIF» «this.asParameter()»AsBasicType
 	  	«ELSE»
 	  		«LET this.type.attribute().select(e|e.isStatic == false).first() AS dataTypeProperty»
-		  		«IF this.isRequiredProperty() == false && this.isMultivalued() == false && dataTypeProperty.type.isPrimitiveType()»
+		  		«IF this.isRequiredRESTProperty() == false && this.isMultivalued() == false && dataTypeProperty.type.isPrimitiveType()»
 		  			«dataTypeProperty.getWrapperTypeAwareQualifiedName()» «this.asParameter()»AsBasicType
 		  		«ELSE»
 			  		«dataTypeProperty.fqn()»«IF this.isMultivalued()»[]«ENDIF» «this.asParameter()»AsBasicType

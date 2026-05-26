@@ -2,6 +2,7 @@ extension java::Naming;
 extension java::OpenAPIFunctions;
 extension functions::SystemProperties;
 extension functions::OpenAPIDataType;
+extension functions::Property;
 
 
 // Function checks whether the passed package is part of the package white list for generation. 
@@ -682,12 +683,16 @@ cached boolean validateOnBuild(uml::Class class):
         if class.isStereotypeApplied("ServiceObject")
         then ((JMM::ServiceObject) class).validateOnBuild
         else false;
- 
-    
+
 
 cached int getMetaModelVersion(uml::Element element):
   element.getModel().getAllAppliedProfiles().allOwnedElements().typeSelect(JMM::ModelVersion).get(0).revision;
-  
+
+
+cached String getMetaModelVersionName(uml::Element element):
+  element.getModel().getAllAppliedProfiles().allOwnedElements().typeSelect(JMM::ModelVersion).get(0).versionName;
+
+
 String getWarningMessage(uml::NamedElement element, String errorCode, List[String] params):
 	"       " + getMessage(element, errorCode, params);
 
@@ -707,7 +712,7 @@ cached boolean ignore(uml::Element element):
 	element.isStereotypeApplied("Ignore") || element.owner.isStereotypeApplied("Ignore");
 	
 cached List[uml::Property] getRequiredPropertiesForBuilder(uml::Class class):
-	class.getAllAttributesFromHierarchy().select(e|e.isMultivalued() == false && e.isStatic == false && e.lower > 0 && e.isPropertySuppressed() == false && e.belongsToTransientBidirectionalBackReference() == false);
+	class.getAllAttributesFromHierarchy().select(e|e.isMultivalued() == false && e.isStatic == false && e.lower() > 0 && e.isPropertySuppressed() == false && e.belongsToTransientBidirectionalBackReference() == false);
 	
 	
 cached boolean suppressTechnicalHttpHeaders():

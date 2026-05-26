@@ -23,36 +23,36 @@ public class HeavyDataTypeUser implements ServiceObject {
    */
   private static final long serialVersionUID = 1L;
 
-  @Valid
   @NotNull
+  @Valid
   private BooleanCode booleanCode;
 
-  @Valid
   @NotNull
+  @Valid
   private ByteCode byteCode;
 
-  @Valid
   @NotNull
+  @Valid
   private ShortCode shortCode;
 
-  @Valid
   @NotNull
+  @Valid
   private IntegerCode integerCode;
 
-  @Valid
   @NotNull
+  @Valid
   private FloatCode floatCode;
 
-  @Valid
   @NotNull
+  @Valid
   private DoubleCode doubleCode;
 
-  @Valid
   @NotNull
+  @Valid
   private BigIntegerCode bigInegerCode;
 
-  @Valid
   @NotNull
+  @Valid
   private BigDecimalCode bigDecimalCode;
 
   /**
@@ -150,28 +150,20 @@ public class HeavyDataTypeUser implements ServiceObject {
    */
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Builder {
-    @Valid
     private BooleanCode booleanCode;
 
-    @Valid
     private ByteCode byteCode;
 
-    @Valid
     private ShortCode shortCode;
 
-    @Valid
     private IntegerCode integerCode;
 
-    @Valid
     private FloatCode floatCode;
 
-    @Valid
     private DoubleCode doubleCode;
 
-    @Valid
     private BigIntegerCode bigInegerCode;
 
-    @Valid
     private BigDecimalCode bigDecimalCode;
 
     /**

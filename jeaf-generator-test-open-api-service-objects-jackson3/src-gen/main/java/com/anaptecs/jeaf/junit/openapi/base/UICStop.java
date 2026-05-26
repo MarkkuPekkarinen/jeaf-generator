@@ -58,9 +58,9 @@ public class UICStop extends Stop implements IStop {
   @Positive
   private byte index2;
 
-  @JsonSetter(nulls = Nulls.SKIP)
   @Size(min = 1)
   @NotNull
+  @JsonSetter(nulls = Nulls.SKIP)
   private Set<InlineStopType> inlineStopTypes;
 
   @Deprecated
@@ -145,18 +145,12 @@ public class UICStop extends Stop implements IStop {
    */
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Builder extends Stop.Builder {
-    @Size(min = 32, max = 255)
     private String uicCode;
 
-    @DecimalMax(value = "32.777", inclusive = true)
-    @DecimalMin(value = "1.025", inclusive = true)
     private int priority;
 
-    @Min(value = 1000)
-    @Max(value = 9999)
     private long code;
 
-    @Positive
     private byte index2;
 
     private Set<InlineStopType> inlineStopTypes;

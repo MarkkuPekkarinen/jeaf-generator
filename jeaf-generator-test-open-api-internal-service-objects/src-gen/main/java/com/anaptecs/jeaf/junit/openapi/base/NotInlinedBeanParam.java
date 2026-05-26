@@ -29,8 +29,8 @@ public class NotInlinedBeanParam implements ServiceObject {
   private String header;
 
   @HeaderParam("doubleCode")
-  @Valid
   @NotNull
+  @Valid
   private DoubleCode doubleCode;
 
   @HeaderParam("extensibleEnum")
@@ -38,8 +38,8 @@ public class NotInlinedBeanParam implements ServiceObject {
   private ExtensibleEnum extensibleEnum;
 
   @HeaderParam("bookingID")
-  @Valid
   @NotNull
+  @Valid
   private BookingID bookingID;
 
   /**
@@ -117,12 +117,10 @@ public class NotInlinedBeanParam implements ServiceObject {
   public static class Builder {
     private String header;
 
-    @Valid
     private DoubleCode doubleCode;
 
     private ExtensibleEnum extensibleEnum;
 
-    @Valid
     private BookingID bookingID;
 
     /**

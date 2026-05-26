@@ -44,9 +44,9 @@ public abstract class ResellerBase implements ServiceObject, Identifiable<Servic
    */
   private final ServiceObjectID objectID;
 
-  @JsonSetter(nulls = Nulls.SKIP)
   @Size(min = 1)
   @NotNull
+  @JsonSetter(nulls = Nulls.SKIP)
   private List<Channel> channels;
 
   /**
@@ -125,8 +125,6 @@ public abstract class ResellerBase implements ServiceObject, Identifiable<Servic
      * <p/>
      * <b>Breaking Change with 1.1:</b> Maximum size will be increased.
      */
-    @NotBlank
-    @Size(min = 0, max = 32)
     private String name;
 
     private Locale language;

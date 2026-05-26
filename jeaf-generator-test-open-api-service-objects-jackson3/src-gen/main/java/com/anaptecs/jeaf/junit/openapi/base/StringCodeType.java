@@ -62,7 +62,6 @@ public class StringCodeType implements ServiceObject {
    */
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Builder {
-    @Size(min = 0, max = 256)
     private String code;
 
     /**

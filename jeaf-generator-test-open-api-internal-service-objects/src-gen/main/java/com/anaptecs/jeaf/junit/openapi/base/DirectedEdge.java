@@ -39,8 +39,8 @@ public class DirectedEdge implements ServiceObject {
   /**
    * The end
    */
-  @Valid
   @NotNull
+  @Valid
   private Stop end;
 
   /**

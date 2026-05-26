@@ -32,13 +32,13 @@ public class SpecialContext extends Context {
    */
   @Deprecated
   @HeaderParam("deprecatedHeader")
-  @Valid
   @NotNull
+  @Valid
   private IntegerCode deprecatedHeader;
 
   @HeaderParam("deprecatedType")
-  @Valid
   @NotNull
+  @Valid
   private DeprecatedType deprecatedType;
 
   /**
@@ -135,10 +135,8 @@ public class SpecialContext extends Context {
      * @deprecated (<b>since:</b> TBD, <b>removed with:</b> 2024-12-24)
      */
     @Deprecated
-    @Valid
     private IntegerCode deprecatedHeader;
 
-    @Valid
     private DeprecatedType deprecatedType;
 
     /**

@@ -138,7 +138,6 @@ public class Context {
   @JsonPOJOBuilder(withPrefix = "set")
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Builder {
-    @NotEmpty
     private String accessToken;
 
     /**

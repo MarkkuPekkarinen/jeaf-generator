@@ -70,7 +70,6 @@ public class BookingCode implements ServiceObject {
    */
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Builder {
-    @Size(min = 3, max = 5)
     private String code;
 
     /**

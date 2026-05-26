@@ -53,9 +53,9 @@ public class MultiValuedDataType implements ServiceObject {
    * so many literals are possible
    */
   @QueryParam("literals")
-  @JsonSetter(nulls = Nulls.SKIP)
   @Size(min = 1)
   @NotNull
+  @JsonSetter(nulls = Nulls.SKIP)
   private List<BooleanLiteralsEnum> literals;
 
   @QueryParam("stringProperty")
@@ -143,14 +143,11 @@ public class MultiValuedDataType implements ServiceObject {
      */
     private List<BooleanLiteralsEnum> literals;
 
-    @Size(min = 32, max = 64)
     private String stringProperty;
 
     /**
      * long values as multivalued header
      */
-    @Min(value = 3270)
-    @Max(value = 4711)
     private long[] longValues;
 
     /**

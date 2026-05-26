@@ -43,9 +43,9 @@ public class WeirdParent implements ServiceObject {
   @NotNull
   private ComplexBookingID complexBooking;
 
-  @JsonSetter(nulls = Nulls.SKIP)
   @Size(min = 1)
   @NotNull
+  @JsonSetter(nulls = Nulls.SKIP)
   private Set<ComplexBookingID> complexBookings;
 
   /**

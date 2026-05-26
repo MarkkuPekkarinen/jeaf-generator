@@ -81,15 +81,15 @@ public abstract class ProductBase implements ServiceObject, Identifiable<Service
   private final UUID productID;
 
   @Size(min = 7, max = 42)
+  @NotNull
   @Valid
   @JsonSetter(nulls = Nulls.SKIP)
-  @NotNull
   private Set<CurrencyCode> supportedCurrencies;
 
-  @Valid
-  @JsonSetter(nulls = Nulls.SKIP)
   @Size(min = 1)
   @NotNull
+  @Valid
+  @JsonSetter(nulls = Nulls.SKIP)
   private Set<ProductCode> productCodes;
 
   @Deprecated
@@ -170,7 +170,6 @@ public abstract class ProductBase implements ServiceObject, Identifiable<Service
 
     private Set<Reseller> resellers;
 
-    @Size(min = 12, max = Integer.MAX_VALUE)
     private String name;
 
     /**

@@ -55,8 +55,8 @@ public class Stop implements ServiceObject {
    * This class uses so called soft links for decoupling. The actual type that is hidden by {@link #theSoftLink} is
    * <code>LinkObject</code><br/>
    */
-  @Valid
   @NotNull
+  @Valid
   private SoftLink theSoftLink;
 
   /**
@@ -131,8 +131,6 @@ public class Stop implements ServiceObject {
 
     private List<LinkObject> links;
 
-    @Max(value = 32)
-    @PositiveOrZero
     private byte index;
 
     /**
@@ -140,8 +138,6 @@ public class Stop implements ServiceObject {
      * This class uses so called soft links for decoupling. The actual type that is hidden by {@link #theSoftLink} is
      * <code>LinkObject</code><br/>
      */
-    @Valid
-    @NotNull
     private SoftLink theSoftLink;
 
     /**

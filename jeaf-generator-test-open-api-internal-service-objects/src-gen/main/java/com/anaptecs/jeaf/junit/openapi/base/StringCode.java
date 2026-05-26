@@ -70,7 +70,6 @@ public class StringCode implements ServiceObject {
    */
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static class Builder {
-    @Size(min = 32, max = 128)
     private String code;
 
     /**

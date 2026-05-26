@@ -45,8 +45,8 @@ public class ChildAA extends ChildA {
   @Size(min = 1)
   private String[] requiredArray;
 
-  @Valid
   @NotNull
+  @Valid
   private BigIntegerCode bigIntegerCode;
 
   @Valid
@@ -141,17 +141,14 @@ public class ChildAA extends ChildA {
      */
     private byte childAAAttribute;
 
-    @Size(min = 10, max = 100)
     private int[] sizedArray;
 
     private String[] requiredArray;
 
-    @Valid
     private BigIntegerCode bigIntegerCode;
 
     private IntegerCodeType integerCode;
 
-    @Valid
     private IntegerCode[] codes;
 
     /**
