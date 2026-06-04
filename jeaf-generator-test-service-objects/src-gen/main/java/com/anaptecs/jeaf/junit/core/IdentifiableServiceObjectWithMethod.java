@@ -36,7 +36,7 @@ public class IdentifiableServiceObjectWithMethod extends IdentifiableServiceObje
 
   /**
    * Class implements builder to create a new instance of class IdentifiableServiceObjectWithMethod. As the class has
-   * readonly attributes or associations instances can not be created directly. Instead this builder class has to be
+   * read-only attributes or associations instances can not be created directly. Instead this builder class has to be
    * used.
    */
   public static class Builder extends IdentifiableServiceObjectWithMethod.BuilderBase {

@@ -20,8 +20,8 @@ public abstract class AbtractWithDerivedPropertyAndCustomImpl extends AbtractWit
 
   /**
    * Class implements builder to create a new instance of class AbtractWithDerivedPropertyAndCustomImpl. As the class
-   * has readonly attributes or associations instances can not be created directly. Instead this builder class has to be
-   * used.
+   * has read-only attributes or associations instances can not be created directly. Instead this builder class has to
+   * be used.
    */
   public static abstract class Builder extends AbtractWithDerivedPropertyAndCustomImpl.BuilderBase {
     /**

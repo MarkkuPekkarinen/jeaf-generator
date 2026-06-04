@@ -36,7 +36,7 @@ public class PartiallyDeprecatedServiceObject extends PartiallyDeprecatedService
 
   /**
    * Class implements builder to create a new instance of class PartiallyDeprecatedServiceObject. As the class has
-   * readonly attributes or associations instances can not be created directly. Instead this builder class has to be
+   * read-only attributes or associations instances can not be created directly. Instead this builder class has to be
    * used.
    */
   public static class Builder extends PartiallyDeprecatedServiceObject.BuilderBase {
